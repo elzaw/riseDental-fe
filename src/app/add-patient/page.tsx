@@ -73,7 +73,7 @@ const AddPatientPage = () => {
     }
   };
   return (
-    <div className="my-20 ">
+    <div className="lg:m-0 mt-[20rem]  ">
       <Card className="lg:w-[50rem] w-[20rem] ">
         <CardHeader>
           <CardTitle className="text-end">إضافة مريض جديد</CardTitle>
@@ -133,7 +133,7 @@ const AddPatientPage = () => {
           key={index}
           className="text-gray-900 dark:text-gray-50"
         >
-          <div className="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-6 mt-5 cursor-pointer">
+          <div className="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-6 mt-5 cursor-pointer mb-5">
             <h2 className="text-2xl font-bold mb-4 text-right">
               معلومات الاتصال
             </h2>
