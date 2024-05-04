@@ -47,6 +47,7 @@ const AddPatientPage = () => {
 
       console.error("Error adding patient:", error);
     }
+    fetchData();
   };
 
   // Function to handle input changes
@@ -60,17 +61,17 @@ const AddPatientPage = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await instance.get("/patients");
-        console.log("API Response:", response.data);
-        setPatients(response.data);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      }
-    };
     fetchData();
   }, []);
+  const fetchData = async () => {
+    try {
+      const response = await instance.get("/patients");
+      console.log("API Response:", response.data);
+      setPatients(response.data);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    }
+  };
   return (
     <div className="my-20 ">
       <Card className="lg:w-[50rem] w-[20rem] ">
