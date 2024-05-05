@@ -356,7 +356,7 @@ const Patient = (props: any) => {
 
             <div className="flex items-center justify-end">
               <span className="text-gray-900 dark:text-gray-50 mr-2">
-                ملاحظات: {exam.notes}
+                ملاحظات: {exam.notes === "" ? "لا يوجد" : exam.notes}{" "}
               </span>
             </div>
             <div className="flex items-center justify-end">
@@ -366,7 +366,8 @@ const Patient = (props: any) => {
             </div>
             <div className="flex items-center justify-end">
               <span className="text-gray-900 dark:text-gray-50 mr-2">
-                موعد الزيارة القادمة: {formatDate(exam.nextVisit)}{" "}
+                موعد الزيارة القادمة:{" "}
+                {exam.nextVisit ? formatDate(exam.nextVisit) : "لا يوجد"}
               </span>
             </div>
             {/* Edit/Update buttons */}
