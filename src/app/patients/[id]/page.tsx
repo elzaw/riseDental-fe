@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@mui/material";
 import { Label } from "@/components/ui/label";
+import toast from "react-hot-toast";
 
 // Define the type of props using an interface
 interface patient {
@@ -155,6 +156,9 @@ const Patient = (props: any) => {
         nextVisit: "",
       });
       setShowForm(false);
+
+      // Display an alert message upon successful form submission
+      toast.success("تمت إضافة الفحص بنجاح!");
     } catch (err) {
       console.error("Error submitting examination data:", err);
     }
@@ -181,7 +185,7 @@ const Patient = (props: any) => {
         return prevExaminations?.filter((exam) => exam._id !== examId);
       });
 
-      console.log("Examination deleted successfully.");
+      toast.success("خلاص اتمسح يا دكترة");
     } catch (error) {
       console.error("Error deleting examination:", error);
     }
