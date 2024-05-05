@@ -73,93 +73,95 @@ const AddPatientPage = () => {
     }
   };
   return (
-    <div className="lg:m-0 mt-[20rem]  ">
-      <Card className="lg:w-[50rem] w-[20rem] ">
-        <CardHeader>
-          <CardTitle className="text-end">إضافة مريض جديد</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="grid gap-4" onSubmit={handleSubmit}>
-            <div className="space-y-2">
-              <Label htmlFor="name" className="flex justify-end">
-                الاسم
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                value={formData.name}
-                placeholder="أدخل الاسم"
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="flex justify-end">
-                رقم التليفون
-              </Label>
-              <Input
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                placeholder="أدخل رقم التليفون"
-                type="tel"
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="address" className="flex justify-end">
-                العنوان
-              </Label>
-              <Input
-                id="address"
-                name="address"
-                value={formData.address}
-                placeholder="أدخل العنوان"
-                onChange={handleChange}
-              />
-            </div>
-
-            <Button type="submit" className="bg-[#000080] text-white">
-              إضافة مريض
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-      <h2 className="text-4xl font-bold mb-4 text-right mt-10">المرضي</h2>
-      {patients.map((patient, index) => (
-        <Link
-          href={`/patients/${patient._id}`}
-          key={index}
-          className="text-gray-900 dark:text-gray-50"
-        >
-          <div className="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-6 mt-5 cursor-pointer mb-5">
-            <h2 className="text-2xl font-bold mb-4 text-right">
-              معلومات الاتصال
-            </h2>
-            <div className="grid lg:grid-cols-3 grid-cols-1  gap-4">
-              <div className="flex items-center justify-end">
-                <span className="text-gray-900 dark:text-gray-50 font-medium mr-2">
-                  {patient.name}
-                </span>
-                <UserIcon className="h-5 w-5 text-gray-500" />
+    <div className="flex justify-center items-center h-screen">
+      <div className="lg:m-0 mt-[20rem]  ">
+        <Card className="lg:w-[50rem] w-[20rem] ">
+          <CardHeader>
+            <CardTitle className="text-end">إضافة مريض جديد</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form className="grid gap-4" onSubmit={handleSubmit}>
+              <div className="space-y-2">
+                <Label htmlFor="name" className="flex justify-end">
+                  الاسم
+                </Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  placeholder="أدخل الاسم"
+                  onChange={handleChange}
+                />
               </div>
-              <div className="flex items-center justify-end">
-                <span className="text-gray-900 dark:text-gray-50 mr-2">
-                  {patient.address}
-                </span>
-                <MapPinIcon className="h-5 w-5 text-gray-500" />
+
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="flex justify-end">
+                  رقم التليفون
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  placeholder="أدخل رقم التليفون"
+                  type="tel"
+                  onChange={handleChange}
+                />
               </div>
-              <div className="flex items-center justify-end">
-                <span className="text-gray-900 dark:text-gray-50 mr-2">
-                  {patient.phone}
-                </span>
-                <PhoneIcon className="h-5 w-5 text-gray-500" />
+
+              <div className="space-y-2">
+                <Label htmlFor="address" className="flex justify-end">
+                  العنوان
+                </Label>
+                <Input
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  placeholder="أدخل العنوان"
+                  onChange={handleChange}
+                />
+              </div>
+
+              <Button type="submit" className="bg-[#000080] text-white">
+                إضافة مريض
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+        <h2 className="text-4xl font-bold mb-4 text-right mt-10">المرضي</h2>
+        {patients.map((patient, index) => (
+          <Link
+            href={`/patients/${patient._id}`}
+            key={index}
+            className="text-gray-900 dark:text-gray-50"
+          >
+            <div className="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-6 mt-5 cursor-pointer mb-5">
+              <h2 className="text-2xl font-bold mb-4 text-right">
+                معلومات الاتصال
+              </h2>
+              <div className="grid lg:grid-cols-3 grid-cols-1  gap-4">
+                <div className="flex items-center justify-end">
+                  <span className="text-gray-900 dark:text-gray-50 font-medium mr-2">
+                    {patient.name}
+                  </span>
+                  <UserIcon className="h-5 w-5 text-gray-500" />
+                </div>
+                <div className="flex items-center justify-end">
+                  <span className="text-gray-900 dark:text-gray-50 mr-2">
+                    {patient.address}
+                  </span>
+                  <MapPinIcon className="h-5 w-5 text-gray-500" />
+                </div>
+                <div className="flex items-center justify-end">
+                  <span className="text-gray-900 dark:text-gray-50 mr-2">
+                    {patient.phone}
+                  </span>
+                  <PhoneIcon className="h-5 w-5 text-gray-500" />
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

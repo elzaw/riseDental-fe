@@ -18,20 +18,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* <link rel="shortcut icon" href={favicon} /> */}
-        <link rel="shortcut icon" href="../public/Logo.svg" />
-      </head>
       <body className={inter.className}>
-        <div className="w-screen h-screen flex flex-col  ">
-          <div className="flex flex-row-reverse h-full">
-            <div className="w-3/10 h-full">
-              <Sidebar />
-            </div>
-            <div className="w-7/10 w-full flex justify-center items-center ">
-              <Toaster />
-              {children}
-            </div>
+        <div className="grid grid-cols-7">
+          <div className="col-span-6">
+            <Toaster />
+            {children}
+          </div>
+          <div className="col-span-1 h-full">
+            <Sidebar />
           </div>
         </div>
       </body>

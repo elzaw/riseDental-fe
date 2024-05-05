@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import RiseDentalLogo from "../../public/Logo.svg";
 import instance from "@/axois/instance";
+import { title } from "process";
 const Sidebar = () => {
   useEffect(() => {
     const fetchData = async () => {
@@ -17,6 +18,34 @@ const Sidebar = () => {
     fetchData();
   }, []);
 
+  const links = [
+    {
+      url: "/add-patient",
+      title: "اضافة مريض",
+      icon: <CalendarIcon className="h-4 w-4" />,
+    },
+    {
+      url: "/#",
+      title: "المواعيد",
+      icon: <CalendarIcon className="h-4 w-4" />,
+    },
+    {
+      url: "/patients",
+      title: "المرضي",
+      icon: <UsersIcon className="h-4 w-4" />,
+    },
+    {
+      url: "/#",
+      title: "المدفوعات",
+      icon: <CreditCardIcon className="h-4 w-4" />,
+    },
+    {
+      url: "/#",
+      title: "الاعدادات",
+      icon: <SettingsIcon className="h-4 w-4" />,
+    },
+  ];
+
   return (
     <div className="hidden border-l bg-gray-100/40 dark:bg-gray-800/40 h-screen lg:block rtl">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -27,9 +56,7 @@ const Sidebar = () => {
               src={RiseDentalLogo}
               alt="Picture of the author"
               width={200}
-              //   height={10}
             />
-            {/* <span>Rise Dental</span> */}
           </Link>
           <button className="mr-auto h-8 w-8 ">
             <BellIcon className="h-4 w-4" />
@@ -38,41 +65,16 @@ const Sidebar = () => {
         </div>
         <div className="flex-1 overflow-auto py-2">
           <nav className="grid items-start px-4 text-xl font-medium ">
-            <Link
-              className="flex items-center justify-end gap-3 rounded-lg hover:bg-gray-100 px-3 py-2 text-gray-900 transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-              href="/add-patient"
-            >
-              <CalendarIcon className="h-4 w-4" />
-              اضافة مريض
-            </Link>
-            <Link
-              className="flex items-center justify-end gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900 transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-              href="/home"
-            >
-              <CalendarIcon className="h-4 w-4" />
-              المواعيد
-            </Link>
-            <Link
-              className="flex items-center justify-end gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              href="/patients"
-            >
-              <UsersIcon className="h-4 w-4" />
-              المرضى
-            </Link>
-            <Link
-              className="flex items-center justify-end gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              href="#"
-            >
-              <CreditCardIcon className="h-4 w-4" />
-              المدفوعات
-            </Link>
-            <Link
-              className="flex items-center justify-end gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              href="#"
-            >
-              <SettingsIcon className="h-4 w-4" />
-              الإعدادات
-            </Link>
+            {links.map((link) => (
+              <Link
+                className="flex items-center justify-end gap-3 rounded-lg hover:bg-gray-100 px-3 py-2 text-gray-900 transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
+                href={link.url}
+                key={link.title}
+              >
+                {link.icon}
+                {link.title}
+              </Link>
+            ))}
           </nav>
         </div>
       </div>
