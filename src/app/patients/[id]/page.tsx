@@ -329,7 +329,10 @@ const Patient = (props: any) => {
                   />
                 </div>
 
-                <Button type="submit" className="bg-[#000080] text-white">
+                <Button
+                  type="submit"
+                  className="bg-[#000080] hover:bg-blue-900 text-white"
+                >
                   إضافة فحص
                 </Button>
               </form>
