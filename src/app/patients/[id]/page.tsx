@@ -32,8 +32,8 @@ interface examination {
   paid: number;
   remaining: number;
   action: string;
-  date: Date;
-  nextVisit: Date;
+  date: string;
+  nextVisit: string;
   notes: string;
 }
 
@@ -57,8 +57,8 @@ const Patient = (props: any) => {
     // remaining: 0,
     action: "",
     notes: "",
-    date: new Date(),
-    nextVisit: new Date(),
+    date: "",
+    nextVisit: "",
   });
   const [isEditing, setIsEditing] = useState(false);
   const [currentExam, setCurrentExam] = useState<examination | null>(null);
@@ -98,6 +98,7 @@ const Patient = (props: any) => {
   ) => {
     const { name, value } = e.target;
     let updatedValue: string | Date = value;
+
     // If the input name is "date" or "nextVisit", format the value to "yyyy-mm-dd"
     // Convert the string value to a Date object if the input is a date field
     if (name === "date" || name === "nextVisit") {
@@ -109,29 +110,6 @@ const Patient = (props: any) => {
       [name]: updatedValue,
     });
   };
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   try {
-  //     console.log(formData);
-
-  //     await instance.post(`examinations/`, formData);
-  //     fetchExaminaions();
-  //     setFormData({
-  //       ...formData,
-  //       examinationFee: "",
-  //       paid: 0,
-  //       // remaining: 0,
-  //       notes: "",
-  //       action: "",
-  //       date: new Date(),
-  //       nextVisit: new Date(),
-  //     });
-  //     setShowForm(false);
-  //   } catch (err) {
-  //     console.error("Error submitting examination data:", err);
-  //   }
-  // };
 
   // Function to handle editing an examination
   const handleEdit = (exam: examination) => {
@@ -149,8 +127,8 @@ const Patient = (props: any) => {
       paid: exam.paid,
       action: exam.action,
       notes: exam.notes,
-      date: new Date(exam.date),
-      nextVisit: new Date(exam.nextVisit),
+      date: exam.date,
+      nextVisit: exam.nextVisit,
     });
   };
 
@@ -173,8 +151,8 @@ const Patient = (props: any) => {
         paid: 0,
         notes: "",
         action: "",
-        date: new Date(),
-        nextVisit: new Date(),
+        date: "",
+        nextVisit: "",
       });
       setShowForm(false);
     } catch (err) {
@@ -299,7 +277,7 @@ const Patient = (props: any) => {
                 <Input
                   id="date"
                   name="date"
-                  value={formData.date.toISOString().substr(0, 10)} // Convert to string
+                  value={formData.date} // Convert to string
                   type="date"
                   placeholder="أدخل ميعاد الكشف"
                   onChange={handleChange}
@@ -310,7 +288,7 @@ const Patient = (props: any) => {
                 <Input
                   id="nextVisit"
                   name="nextVisit"
-                  value={formData.nextVisit.toISOString().substr(0, 10)} // Convert to string
+                  value={formData.nextVisit}
                   type="date"
                   placeholder="أدخل ميعاد الزيارة القادمة"
                   onChange={handleChange}
