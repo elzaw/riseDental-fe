@@ -34,35 +34,8 @@ interface examination {
   action: string;
   date: Date;
   nextVisit: Date;
+  notes: string;
 }
-
-const formatDateAndCalculateDifference = (dateString: string) => {
-  const date = new Date(dateString);
-  const today = new Date();
-
-  if (isNaN(date.getTime())) {
-    return "لا يوجد";
-  }
-
-  // Check if the date is today
-  if (date.toDateString() === today.toDateString()) {
-    return "اليوم";
-  }
-  // Check if the date is tomorrow
-  else if (
-    date.getDate() - today.getDate() === 1 &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
-  ) {
-    return "الغد";
-  }
-  // For other dates, calculate the difference
-  else {
-    const diffTime = Math.abs(date.getTime() - today.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return `بعد ${diffDays} يوم`;
-  }
-};
 
 // Update the function to format the date properly
 const formatDate = (dateString: string) => {
@@ -79,7 +52,7 @@ const Patient = (props: any) => {
   const [showForm, setShowForm] = useState(false); // State to toggle the form
   const [formData, setFormData] = useState({
     patient: props.params.id,
-    examinationFee: "",
+    examinationFee: 0,
     paid: 0,
     // remaining: 0,
     action: "",
@@ -87,6 +60,8 @@ const Patient = (props: any) => {
     date: new Date(),
     nextVisit: new Date(),
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentExam, setCurrentExam] = useState<examination | null>(null);
 
   const fetchData = async () => {
     try {
@@ -118,16 +93,16 @@ const Patient = (props: any) => {
     setShowForm(!showForm);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    let updatedValue = value;
+    let updatedValue: string | Date = value;
     // If the input name is "date" or "nextVisit", format the value to "yyyy-mm-dd"
+    // Convert the string value to a Date object if the input is a date field
     if (name === "date" || name === "nextVisit") {
-      const [year, month, day] = value.split("-"); // Split the value by "-" to get year, month, and day
-      updatedValue = `${year.padStart(4, "0")}-${month.padStart(
-        2,
-        "0"
-      )}-${day.padStart(2, "0")}`; // Format the date as "yyyy-mm-dd"
+      updatedValue = new Date(value); // Convert string to Date object
+      updatedValue = updatedValue.toISOString().substr(0, 10); // Format to yyyy-mm-dd
     }
     setFormData({
       ...formData,
@@ -135,18 +110,67 @@ const Patient = (props: any) => {
     });
   };
 
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   try {
+  //     console.log(formData);
+
+  //     await instance.post(`examinations/`, formData);
+  //     fetchExaminaions();
+  //     setFormData({
+  //       ...formData,
+  //       examinationFee: "",
+  //       paid: 0,
+  //       // remaining: 0,
+  //       notes: "",
+  //       action: "",
+  //       date: new Date(),
+  //       nextVisit: new Date(),
+  //     });
+  //     setShowForm(false);
+  //   } catch (err) {
+  //     console.error("Error submitting examination data:", err);
+  //   }
+  // };
+
+  // Function to handle editing an examination
+  const handleEdit = (exam: examination) => {
+    setCurrentExam(exam); // Set the current examination to be edited
+    setIsEditing(true); // Set the editing mode to true
+    fillFormForEdit(exam); // Fill the form with examination data
+  };
+
+  // Function to fill the form with examination data for editing
+  const fillFormForEdit = (exam: examination) => {
+    // Set the form data with the examination details
+    setFormData({
+      ...formData,
+      examinationFee: exam.examinationFee,
+      paid: exam.paid,
+      action: exam.action,
+      notes: exam.notes,
+      date: new Date(exam.date),
+      nextVisit: new Date(exam.nextVisit),
+    });
+  };
+
+  // Update the form submission logic
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(formData);
-
-      await instance.post(`examinations/`, formData);
+      if (isEditing && currentExam) {
+        // If editing an existing examination, send a PUT request to update it
+        await handleUpdate(formData); // Update the examination
+      } else {
+        // If adding a new examination, send a POST request to create it
+        await instance.post(`examinations/`, formData);
+      }
       fetchExaminaions();
+      // Reset form data and toggle form visibility
       setFormData({
         ...formData,
-        examinationFee: "",
+        examinationFee: 0,
         paid: 0,
-        // remaining: 0,
         notes: "",
         action: "",
         date: new Date(),
@@ -158,6 +182,32 @@ const Patient = (props: any) => {
     }
   };
 
+  // Function to update the examination
+  const handleUpdate = async (updatedExamData: Partial<examination>) => {
+    try {
+      await instance.patch(`examinations/${currentExam?._id}`, updatedExamData);
+      fetchExaminaions(); // Refresh examination list
+      setIsEditing(false); // Close edit popup
+    } catch (err) {
+      console.error("Error updating examination data:", err);
+    }
+  };
+
+  const handleDelete = async (examId: string) => {
+    try {
+      // Make a DELETE request to delete the examination
+      await instance.delete(`examinations/${examId}`);
+
+      // Optionally, update the state to remove the deleted examination
+      setExaminations((prevExaminations) => {
+        return prevExaminations?.filter((exam) => exam._id !== examId);
+      });
+
+      console.log("Examination deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting examination:", error);
+    }
+  };
   return (
     <>
       <div className="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-6 lg:m-20 m-5 border-2 border-[#000080] ">
@@ -243,32 +293,28 @@ const Patient = (props: any) => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="date" className="flex justify-end">
-                    ميعاد
-                  </Label>
-                  <Input
-                    id="date"
-                    name="date"
-                    value={formData.date}
-                    type="date"
-                    placeholder="أدخل ميعاد الكشف"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="nextVisit" className="flex justify-end">
-                    ميعاد الزيارة القادمة
-                  </Label>
-                  <Input
-                    id="nextVisit"
-                    name="nextVisit"
-                    value={formData.nextVisit}
-                    type="date"
-                    placeholder="أدخل ميعاد الزيارة القادمة"
-                    onChange={handleChange}
-                  />
-                </div>
+                <Label htmlFor="date" className="flex justify-end">
+                  تاريخ الكشف{" "}
+                </Label>
+                <Input
+                  id="date"
+                  name="date"
+                  value={formData.date.toISOString().substr(0, 10)} // Convert to string
+                  type="date"
+                  placeholder="أدخل ميعاد الكشف"
+                  onChange={handleChange}
+                />
+                <Label htmlFor="nextVisit" className="flex justify-end">
+                  ميعاد الزيارة القادمة
+                </Label>
+                <Input
+                  id="nextVisit"
+                  name="nextVisit"
+                  value={formData.nextVisit.toISOString().substr(0, 10)} // Convert to string
+                  type="date"
+                  placeholder="أدخل ميعاد الزيارة القادمة"
+                  onChange={handleChange}
+                />
                 <div className="space-y-2">
                   <Label htmlFor="notes" className="flex justify-end">
                     ملاحظات
