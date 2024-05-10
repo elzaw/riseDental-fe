@@ -91,6 +91,7 @@ const AddPatientPage = () => {
                   value={formData.name}
                   placeholder="أدخل الاسم"
                   onChange={handleChange}
+                  className="text-end"
                 />
               </div>
 
@@ -105,6 +106,7 @@ const AddPatientPage = () => {
                   placeholder="أدخل رقم التليفون"
                   type="tel"
                   onChange={handleChange}
+                  className="text-end"
                 />
               </div>
 
@@ -118,6 +120,7 @@ const AddPatientPage = () => {
                   value={formData.address}
                   placeholder="أدخل العنوان"
                   onChange={handleChange}
+                  className="text-end"
                 />
               </div>
 

@@ -246,6 +246,7 @@ const Patient = (props: any) => {
                     type="number"
                     placeholder="أدخل رسوم الفحص"
                     onChange={handleChange}
+                    className="text-end"
                   />
                 </div>
 
@@ -260,6 +261,7 @@ const Patient = (props: any) => {
                     placeholder="أدخل المبلغ المدفوع"
                     type="number"
                     onChange={handleChange}
+                    className="text-end"
                   />
                 </div>
 
@@ -273,6 +275,7 @@ const Patient = (props: any) => {
                     value={formData.action}
                     placeholder="أدخل الاجراء"
                     onChange={handleChange}
+                    className="text-end"
                   />
                 </div>
                 <Label htmlFor="date" className="flex justify-end">
@@ -307,7 +310,7 @@ const Patient = (props: any) => {
                     value={formData.notes}
                     placeholder="أدخل الملاحظات"
                     onChange={handleChange}
-                    className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500 w-full"
+                    className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500 w-full text-end"
                   />
                 </div>
 

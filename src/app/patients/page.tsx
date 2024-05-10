@@ -40,6 +40,7 @@ const PatientsPage = () => {
     id: string,
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    event.preventDefault(); // Prevent the default behavior of the link
     event.stopPropagation(); // Prevent navigation when clicking the delete button
     try {
       await instance.delete(`/patients/${id}`);
@@ -58,7 +59,7 @@ const PatientsPage = () => {
         placeholder="ابحث عن مريض"
         value={searchQuery}
         onChange={handleSearch}
-        className="rounded-md border-gray-300 focus:border-blue-500 ring  focus:ring  focus:ring-blue-200 focus:ring-opacity-50 w-full p-2"
+        className="rounded-md border-gray-300 focus:border-blue-500 ring  focus:ring  focus:ring-blue-200 focus:ring-opacity-50 w-full p-2 text-end"
       />
       {filteredPatients.map((patient, index) => (
         <Link
